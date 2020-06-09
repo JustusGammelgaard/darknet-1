@@ -136,7 +136,17 @@ def detect1(net, meta, image, thresh=.5, hier_thresh=.5, nms=.45):
         for i in range(meta.classes):
             if dets[j].prob[i] > 0:
                 b = dets[j].bbox
-                res.append(('meta:', meta.names[i],'prob:' , dets[j].prob[i], ('boxX:', b.x,'boxY:', b.y, 'boxW:', b.w, 'boxH:', b.h)))
+                json_object = {
+                    "meta": meta.names[i],
+                    "prob": dets[j].prob[i],
+                    "bx": b.x,
+                    "by": b.y,
+                    "bw": b.w
+                    "bh": b.h
+                    }
+                res.append(json_object)
+                
+                
     res = sorted(res, key=lambda x: -x[1])
     free_image(im)
     free_detections(dets, num)
